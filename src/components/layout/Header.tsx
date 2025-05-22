@@ -1,7 +1,6 @@
-
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, Search, ChevronDown } from "lucide-react";
+import { Bell, Search, ChevronDown, Menu } from "lucide-react";
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -11,7 +10,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
 
-export function Header({ pageTitle }: { pageTitle?: string }) {
+interface HeaderProps {
+  pageTitle?: string;
+  onMenuClick: () => void;
+  isSidebarOpen: boolean;
+}
+
+export function Header({ pageTitle, onMenuClick, isSidebarOpen }: HeaderProps) {
   const location = useLocation();
   
   // Determine title based on current path if not explicitly provided
@@ -25,7 +30,17 @@ export function Header({ pageTitle }: { pageTitle?: string }) {
 
   return (
     <header className="flex items-center justify-between h-16 px-6 border-b border-gray-200 bg-white dark:bg-gray-900 dark:border-gray-800 sticky top-0 z-10 w-full">
-      <h1 className="text-xl font-bold text-gray-800 dark:text-white">{getTitle()}</h1>
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onMenuClick}
+          className="hover:bg-gray-100 dark:hover:bg-gray-800"
+        >
+          <Menu className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+        </Button>
+        <h1 className="text-xl font-bold text-gray-800 dark:text-white">{getTitle()}</h1>
+      </div>
       <div className="flex items-center gap-4">
         <div className="relative">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />

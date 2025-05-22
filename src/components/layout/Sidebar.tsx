@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import {
@@ -52,7 +51,11 @@ const navItems = [
   },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean;
+}
+
+export function Sidebar({ isOpen }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -64,14 +67,23 @@ export function Sidebar() {
   };
 
   return (
-    <div className="w-[200px] min-w-[200px] h-screen bg-white shadow-md flex flex-col fixed left-0 top-0 z-20">
-      <div className="p-4 flex items-center mb-4">
+    <div className={cn(
+      "h-screen bg-white shadow-md flex flex-col fixed left-0 top-0 z-20 transition-all duration-300",
+      isOpen ? "w-[200px]" : "w-0"
+    )}>
+      <div className={cn(
+        "p-4 flex items-center mb-4 transition-opacity duration-300",
+        isOpen ? "opacity-100" : "opacity-0"
+      )}>
         <div className="bg-blue-500 h-8 w-8 rounded flex items-center justify-center mr-2">
           <Microscope className="h-5 w-5 text-white" />
         </div>
         <span className="font-bold text-gray-800">PandemicNet</span>
       </div>
-      <div className="flex-1 px-3 flex flex-col gap-2">
+      <div className={cn(
+        "flex-1 px-3 flex flex-col gap-2 transition-opacity duration-300",
+        isOpen ? "opacity-100" : "opacity-0"
+      )}>
         {navItems.map((item) => (
           <Link
             key={item.href}
@@ -88,7 +100,10 @@ export function Sidebar() {
           </Link>
         ))}
       </div>
-      <div className="p-3 mt-auto">
+      <div className={cn(
+        "p-3 mt-auto transition-opacity duration-300",
+        isOpen ? "opacity-100" : "opacity-0"
+      )}>
         <Button
           variant="ghost"
           size="sm"
