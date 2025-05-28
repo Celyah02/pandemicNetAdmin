@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "react-router-dom";
+import { useAdmin } from "@/contexts/AdminContext";
 
 interface HeaderProps {
   pageTitle?: string;
@@ -18,6 +19,7 @@ interface HeaderProps {
 
 export function Header({ pageTitle, onMenuClick, isSidebarOpen }: HeaderProps) {
   const location = useLocation();
+  const { admin } = useAdmin();
   
   // Determine title based on current path if not explicitly provided
   const getTitle = () => {
@@ -78,11 +80,11 @@ export function Header({ pageTitle, onMenuClick, isSidebarOpen }: HeaderProps) {
         
         <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8 border border-gray-200 dark:border-gray-700">
-            <AvatarImage src="/lovable-uploads/e4a554a6-52de-451c-b319-203e2bc527d2.png" />
-            <AvatarFallback>MU</AvatarFallback>
+            <AvatarImage src={admin.profileImage} />
+            <AvatarFallback>{admin.firstName[0]}{admin.lastName[0]}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-gray-800 dark:text-white">Musifq</span>
+            <span className="text-sm font-medium text-gray-800 dark:text-white">{`${admin.firstName} ${admin.lastName}`}</span>
             <span className="text-xs text-gray-500">Admin</span>
           </div>
           <ChevronDown className="h-4 w-4 text-gray-500" />

@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +15,7 @@ import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import NotFound from "./pages/NotFound";
 import { UserProvider } from "./contexts/UserContext";
+import { AdminProvider } from "./contexts/AdminContext";
 
 const queryClient = new QueryClient();
 
@@ -33,16 +33,18 @@ const App = () => (
             element={
               <ThemeProvider>
                 <UserProvider>
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route path="/pandemics" element={<Pandemics />} />
-                    <Route path="/statistics" element={<Statistics />} />
-                    <Route path="/predictions" element={<Predictions />} />
-                    <Route path="/hospitals" element={<Hospitals />} />
-                    <Route path="/vaccinations" element={<Vaccinations />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
+                  <AdminProvider>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/pandemics" element={<Pandemics />} />
+                      <Route path="/statistics" element={<Statistics />} />
+                      <Route path="/predictions" element={<Predictions />} />
+                      <Route path="/hospitals" element={<Hospitals />} />
+                      <Route path="/vaccinations" element={<Vaccinations />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </AdminProvider>
                 </UserProvider>
               </ThemeProvider>
             } 
