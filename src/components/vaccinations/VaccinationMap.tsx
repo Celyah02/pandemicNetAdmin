@@ -1,7 +1,17 @@
 import React from 'react';
 import { MapContainer, TileLayer, GeoJSON, Tooltip } from 'react-leaflet';
+import { Feature, Geometry } from 'geojson';
+import { Layer } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+interface RwandaProvinceProperties {
+  name: string;
+  coverage: number;
+  firstDose: number;
+  secondDose: number;
+  pending: number;
+}
 
 // GeoJSON data for Rwanda provinces
 const rwandaProvinces = {
@@ -98,6 +108,24 @@ function getRegionStyle(coverage: number) {
 }
 
 export function VaccinationMap() {
+  const onEachFeature = (feature: Feature<Geometry, RwandaProvinceProperties>, layer: Layer) => {
+    const properties = feature.properties;
+    if (properties) {
+      layer.bindTooltip(
+        `<div class="bg-white p-2 rounded-lg shadow-lg">
+          <h3 class="font-bold">${properties.name}</h3>
+          <p class="text-sm">Coverage: ${(properties.coverage * 100).toFixed(1)}%</p>
+          <div class="text-xs mt-1">
+            <p>First Dose: ${properties.firstDose.toLocaleString()}</p>
+            <p>Second Dose: ${properties.secondDose.toLocaleString()}</p>
+            <p>Pending: ${properties.pending.toLocaleString()}</p>
+          </div>
+        </div>`,
+        { sticky: true }
+      );
+    }
+  };
+
   return (
     <div className="relative h-[500px] bg-white rounded-lg shadow-sm p-4">
       {/* Title */}
@@ -156,23 +184,8 @@ export function VaccinationMap() {
         <GeoJSON
           data={rwandaProvinces as any}
           style={(feature) => getRegionStyle(feature?.properties?.coverage || 0)}
-        >
-          {(layer) => {
-            const properties = layer.feature.properties;
-            layer.bindTooltip(
-              `<div class="bg-white p-2 rounded-lg shadow-lg">
-                <h3 class="font-bold">${properties.name}</h3>
-                <p class="text-sm">Coverage: ${(properties.coverage * 100).toFixed(1)}%</p>
-                <div class="text-xs mt-1">
-                  <p>First Dose: ${properties.firstDose.toLocaleString()}</p>
-                  <p>Second Dose: ${properties.secondDose.toLocaleString()}</p>
-                  <p>Pending: ${properties.pending.toLocaleString()}</p>
-                </div>
-              </div>`,
-              { sticky: true }
-            );
-          }}
-        </GeoJSON>
+          onEachFeature={onEachFeature}
+        />
       </MapContainer>
     </div>
   );
