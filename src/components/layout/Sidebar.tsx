@@ -35,7 +35,7 @@ const navItems = [
     href: "/predictions",
   },
   {
-    label: "Hospitals",
+    label: "Health Facilities",
     icon: Hospital,
     href: "/hospitals",
   },
